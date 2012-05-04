@@ -60,8 +60,8 @@ at UC Berkeley.
 
 * Status
   Hassolve is my first venture into writing real software in
-  Haskell. I have demonstrated a proof of concept in solving board
-  games in Haskell. There are still a number of issues to be resolved:
+  Haskell. It is intended as a proof of concept in using Haskell to solve board
+  games. There are still a number of issues to be resolved:
   - The game trees never reconnect after branching. In Tic Tac Toe,
     for instance, it is easy to reach the same board state through a
     variety of sequences of moves. This means that our tree becomes
