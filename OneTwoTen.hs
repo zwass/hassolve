@@ -10,7 +10,7 @@ data OTTBoard = OTTBoard {turn :: Player,
                 deriving (Show, Read)
 
 boardSize :: Integer
-boardSize = 5
+boardSize = 10
 
 instance SolvableGame OTTBoard where
   getInitialPosition = OTTBoard PlayerOne 0

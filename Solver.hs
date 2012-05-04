@@ -16,19 +16,6 @@ nextPlayer PlayerTwo = PlayerOne
 data Value = Undecided | Lose | Tie | Win
            deriving (Show, Read, Eq, Ord)
 
-{-instance Monoid Value where
-  mempty = Undecided
-  mappend Win _ = Win
-  mappend _ Win = Win
-  mappend Tie _ = Tie
-  mappend _ Tie = Tie
-  mappend Lose _ = Lose
-  mappend _ Lose = Lose
-  mappend _ _ = Undecided
-
-foldValues :: [Value] -> Value
-foldValues = foldl' mappend Undecided-}
-
 --For storing hashed boards
 type HashedBoard = Integer
 
@@ -47,13 +34,6 @@ data GameTree a = Node (GameState a) [GameTree a]
 getState :: GameTree a -> GameState a
 getState (Node s _) = s
 getState (Leaf s) = s
-
---exploreTree getIP doMove primitive genMoves =
---solveGame :: SolvableGame g => g -> GameTree
---solveGame = generateMoves g . (getInitialPosition g)
-
-
---get the initial position of tic tac toe
 
 class SolvableGame a where
   getInitialPosition :: a
@@ -74,12 +54,13 @@ playerTwoMax = minimum . filter (/= Undecided) . map (value . getState)
 solve :: SolvableGame a => GameTree a
 solve = exploreTree getInitialPosition
 
+--This is where the magic happens
 exploreTree :: SolvableGame a => a -> GameTree a
-exploreTree b
+exploreTree b -- We're at a leaf if primitive is not undecided
   | primitive b /= Undecided = Leaf $ GameState (primitive b) b
 exploreTree b = case generateMoves b of
   [] -> Leaf $ GameState (primitive b) b
-  ms ->
+  ms -> --Explore the child positions of this position
     let children = map exploreTree . map (doMove b) $ ms
         getMax = if whoseTurn b == PlayerOne then playerOneMax else playerTwoMax in
     Node (GameState (getMax children) b) children
