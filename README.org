@@ -46,14 +46,14 @@ at UC Berkeley.
   generateMoves :: a -> [Move]
   whoseTurn :: a -> Player
   #+END_SRC
-  - src_haskell{getInitialPosition}: Returns the initial board state
-  - src_haskell{doMove}: Applies a Move (currently just an Integer) to the board,
+  - =getInitialPosition=: Returns the initial board state
+  - =doMove=: Applies a Move (currently just an Integer) to the board,
     returning a new board
-  - src_haskell{primitive}: Given a board, returns whether the game is over due to
+  - =primitive=: Given a board, returns whether the game is over due to
     either player winning, or a tie
-  - src_haskell{generateMoves}: Given a board, returns the possible
+  - =generateMoves=: Given a board, returns the possible
     moves that could be applied to that board state
-  - src_haskell{whoseTurn}: Given a board, returns whose turn it is
+  - =whoseTurn=: Given a board, returns whose turn it is
     Some games may be able to determine this from just the pieces on
     the board (Tic Tac Toe), others may need to store the turn
     separately (One Two Ten).
