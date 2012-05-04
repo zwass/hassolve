@@ -24,7 +24,7 @@ type Board2D = [[Piece]]
 --bottom
 
 boardSize :: Int
-boardSize = 2
+boardSize = 3
 
 -- hashBoard :: TTTBoard -> HashedBoard
 -- hashBoard b = foldl' (\h p -> h * 10 + (hashPiece p)) 0 b
@@ -49,7 +49,7 @@ boardSize = 2
 -- unhashPiece 2 = O
 
 tttGetInitialPosition :: TTTBoard
-tttGetInitialPosition = take (boardSize ^ 2) $ repeat Empty
+tttGetInitialPosition = take (boardSize * boardSize) $ repeat Empty
 
 --Returns a count of each type of piece, Xs first
 pieceCounts :: TTTBoard -> (Int, Int)
@@ -92,9 +92,9 @@ pieceAt b (row, col) = b !! (row-1) !! (col-1)
 --in a row-ness
 checkValue :: [Piece] -> Value
 checkValue p = case (filter (\l -> length l >= 3) (group p)) of
-  [] -> Undecided
   [X:_] -> Win
-  otherwise -> Lose
+  [O:_] -> Lose
+  _ -> Undecided
 
 getRows :: Board2D -> [[Piece]]
 getRows = id
@@ -132,8 +132,8 @@ tttGenerateMoves b = map fst $ filter (\(_, p) -> p == Empty) $
                   zip [1..] b
 
 instance SolvableGame TTTBoard where
-  getInitialPosition = Board tttGetInitialPosition
-  doMove b m = Board (tttDoMove (getBoard b) m)
-  primitive = tttPrimitive . getBoard
-  generateMoves = tttGenerateMoves . getBoard
-  whoseTurn = tttWhoseTurn . getBoard
+  getInitialPosition = tttGetInitialPosition
+  doMove = tttDoMove
+  primitive = tttPrimitive
+  generateMoves = tttGenerateMoves
+  whoseTurn = tttWhoseTurn

@@ -2,7 +2,6 @@
 
 module Solver where
 
-
 --For storing whose turn it is
 data Player = PlayerOne | PlayerTwo
             deriving (Show, Read, Eq)
@@ -30,12 +29,6 @@ data Value = Undecided | Lose | Tie | Win
 foldValues :: [Value] -> Value
 foldValues = foldl' mappend Undecided-}
 
-newtype Board a = Board a
-                deriving (Show, Read)
-
-getBoard :: Board a -> a
-getBoard (Board a) = a
-
 --For storing hashed boards
 type HashedBoard = Integer
 
@@ -44,7 +37,7 @@ type Move = Integer
 
 --Everything we need to know for a game state
 data GameState a = GameState {value :: Value,
-                              board :: Board a}
+                              board :: a}
                    deriving (Show, Read)
 --A game tree
 data GameTree a = Node (GameState a) [GameTree a]
@@ -63,11 +56,11 @@ getState (Leaf s) = s
 --get the initial position of tic tac toe
 
 class SolvableGame a where
-  getInitialPosition :: Board a
-  doMove :: Board a -> Move -> Board a
-  primitive :: Board a -> Value
-  generateMoves :: Board a -> [Move]
-  whoseTurn :: Board a -> Player
+  getInitialPosition :: a
+  doMove :: a -> Move -> a
+  primitive :: a -> Value
+  generateMoves :: a -> [Move]
+  whoseTurn :: a -> Player
 
 maxValue :: SolvableGame a => [GameTree a] -> Value
 maxValue = maximum . map (value . getState)
@@ -81,7 +74,7 @@ playerTwoMax = minimum . filter (/= Undecided) . map (value . getState)
 solve :: SolvableGame a => GameTree a
 solve = exploreTree getInitialPosition
 
-exploreTree :: SolvableGame a => Board a -> GameTree a
+exploreTree :: SolvableGame a => a -> GameTree a
 exploreTree b
   | primitive b /= Undecided = Leaf $ GameState (primitive b) b
 exploreTree b = case generateMoves b of

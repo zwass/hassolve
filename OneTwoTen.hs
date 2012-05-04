@@ -13,13 +13,12 @@ boardSize :: Integer
 boardSize = 5
 
 instance SolvableGame OTTBoard where
-  getInitialPosition = Board $ OTTBoard PlayerOne 0
+  getInitialPosition = OTTBoard PlayerOne 0
   doMove b m =
-    Board $
-    OTTBoard (nextPlayer . turn $ getBoard b) (m + (ottBoard $ getBoard b))
-  primitive = ottPrimitive . getBoard
+    OTTBoard (nextPlayer . turn $ b) (m + (ottBoard b))
+  primitive = ottPrimitive
   generateMoves _ = [1, 2]
-  whoseTurn = turn . getBoard
+  whoseTurn = turn
 
 ottPrimitive :: OTTBoard -> Value
 ottPrimitive b
