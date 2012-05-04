@@ -8,8 +8,8 @@ at UC Berkeley.
   To solve a game:
 
   1. Load the appropriate game module into GHCI.
-  2. Call the src_haskell{solve} function, coercing the result to the
-     appropriate src_haskell{GameTree} type.
+  2. Call the =solve= function, coercing the result to the
+     appropriate =GameTree= type.
    
   Note that the values expressed are in terms of the first
   player. Thus "Win" denotes a game in which the first player,
@@ -17,7 +17,7 @@ at UC Berkeley.
   the first player can do is to tie. "Lose" indicates that if the
   second player plays perfectly, the first player will lose.
 
-  src_haskell{getGameVal} can be used to extract the value from a game tree.
+  =getGameVal= can be used to extract the value from a game tree.
 
   Example below:
   #+BEGIN_SRC haskell
