@@ -1,5 +1,10 @@
-Hassolve is a Haskell game solving framework inspired by [[http://gamescrafters.berkeley.edu][Gamescrafters]]
-at UC Berkeley.
+* Hassolve
+  Hassolve is a Haskell game solving framework inspired by
+  [[http://gamescrafters.berkeley.edu][Gamescrafters]] at UC Berkeley.
+
+* Requirements
+  These can be installed through Cabal.
+  - [[http://hackage.haskell.org/packages/archive/split/0.1.1/doc/html/Data-List-Split.html][Data.List.Split]]
 
 * Usage
   Hassolve currently only supports solving games. In the future,
