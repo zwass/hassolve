@@ -1,0 +1,79 @@
+Hassolve is a Haskell game solving framework inspired by [[http://gamescrafters.berkeley.edu][Gamescrafters]]
+at UC Berkeley.
+
+* Usage
+  Hassolve currently only supports solving games. In the future,
+  support for playing solved games will be added.
+
+  To solve a game:
+
+  1. Load the appropriate game module into GHCI.
+  2. Call the src_haskell{solve} function, coercing the result to the
+     appropriate src_haskell{GameTree} type.
+   
+  Note that the values expressed are in terms of the first
+  player. Thus "Win" denotes a game in which the first player,
+  playing perfectly, will win the game. "Tie" indicates that the best
+  the first player can do is to tie. "Lose" indicates that if the
+  second player plays perfectly, the first player will lose.
+
+  src_haskell{getGameVal} can be used to extract the value from a game tree.
+
+  Example below:
+  #+BEGIN_SRC haskell
+  Prelude> :l OneTwoTen
+  [1 of 2] Compiling Solver           ( Solver.hs, interpreted )
+  [2 of 2] Compiling OneTwoTen        ( OneTwoTen.hs, interpreted )
+  Ok, modules loaded: OneTwoTen, Solver.
+  *OneTwoTen> solve :: GameTree OTTBoard
+  ...lots of game tree output...
+  *OneTwoTen> getGameVal (solve :: GameTree OTTBoard)
+  Win
+  #+END_SRC
+
+* Developers
+  Hassolve is designed to make it easy for anyone to solve board games
+  using Haskell. It should theoretically be able to support any
+  deterministic turn based board game.
+
+  To implement a game, you need only implement the SolvableGame
+  typeclass:
+  #+BEGIN_SRC haskell
+  class SolvableGame a where
+  getInitialPosition :: a
+  doMove :: a -> Move -> a
+  primitive :: a -> Value
+  generateMoves :: a -> [Move]
+  whoseTurn :: a -> Player
+  #+END_SRC
+  - src_haskell{getInitialPosition}: Returns the initial board state
+  - src_haskell{doMove}: Applies a Move (currently just an Integer) to the board,
+    returning a new board
+  - src_haskell{primitive}: Given a board, returns whether the game is over due to
+    either player winning, or a tie
+  - src_haskell{generateMoves}: Given a board, returns the possible
+    moves that could be applied to that board state
+  - src_haskell{whoseTurn}: Given a board, returns whose turn it is
+    Some games may be able to determine this from just the pieces on
+    the board (Tic Tac Toe), others may need to store the turn
+    separately (One Two Ten).
+
+* Status
+  Hassolve is my first venture into writing real software in
+  Haskell. I have demonstrated a proof of concept in solving board
+  games in Haskell. There are still a number of issues to be resolved:
+  - The game trees never reconnect after branching. In Tic Tac Toe,
+    for instance, it is easy to reach the same board state through a
+    variety of sequences of moves. This means that our tree becomes
+    even more explosively large than it might otherwise. Solving Tic
+    Tac Toe is slow, and any nontrivial game would be unbearable.
+    - A first step would be to implement memoization. The tree would
+      still grow far larger than needed, but at least redundant
+      recursive calls could be avoided.
+    - Beyond this, the tree structure needs to be able to reconnect
+      after branching to entirely eliminate redundancy.
+  - There is no interface for actually playing the games. This would
+    be a fun feature that would likely encourage others to contribute
+    to implementing games.
+
+
